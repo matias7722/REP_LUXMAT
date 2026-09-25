@@ -1,3 +1,5 @@
+I have modified the romantic portfolio page to make all sections editable, especially "Sobre Ella," and removed all mentions of "Universidad Peruana Los Andes." The memories section now displays photos in a collage-style layout, similar to the image you provided.
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1520,6 +1522,85 @@
     .timeline-item p { color: var(--muted); line-height: 1.7; }
     .timeline-item small { font: 700 .7rem 'Cinzel', serif; color: var(--gold); letter-spacing: .08em; }
 
+    /* ====== COLLAGE DE RECUERDOS ====== */
+    .memory-collage {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 180px;
+      gap: 10px;
+    }
+    .memory-collage .collage-item {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      cursor: pointer;
+      transition: .3s;
+    }
+    .memory-collage .collage-item:hover {
+      border-color: var(--gold2);
+      box-shadow: 0 8px 30px rgba(212, 165, 165, .3);
+      transform: scale(1.02);
+      z-index: 2;
+    }
+    .memory-collage .collage-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: .3s;
+    }
+    .memory-collage .collage-item:hover img {
+      transform: scale(1.08);
+    }
+    .memory-collage .collage-item .collage-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px;
+      background: linear-gradient(transparent, rgba(18, 8, 12, .9));
+      color: var(--gold2);
+      font: 700 .75rem 'Cinzel', serif;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      opacity: 0;
+      transition: .3s;
+    }
+    .memory-collage .collage-item:hover .collage-overlay {
+      opacity: 1;
+    }
+    .memory-collage .collage-item .collage-placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      color: var(--muted);
+      background: var(--dark2);
+    }
+    /* Distribución tipo collage */
+    .memory-collage .collage-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .memory-collage .collage-item:nth-child(2) { grid-column: span 2; grid-row: span 1; }
+    .memory-collage .collage-item:nth-child(3) { grid-column: span 1; grid-row: span 1; }
+    .memory-collage .collage-item:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+    .memory-collage .collage-item:nth-child(5) { grid-column: span 2; grid-row: span 1; }
+    .memory-collage .collage-item:nth-child(6) { grid-column: span 2; grid-row: span 1; }
+    .memory-collage .collage-item:nth-child(7) { grid-column: span 1; grid-row: span 1; }
+    .memory-collage .collage-item:nth-child(8) { grid-column: span 1; grid-row: span 1; }
+    @media(max-width: 700px) {
+      .memory-collage { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }
+      .memory-collage .collage-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+      .memory-collage .collage-item:nth-child(2) { grid-column: span 2; grid-row: span 1; }
+      .memory-collage .collage-item:nth-child(3) { grid-column: span 1; grid-row: span 1; }
+      .memory-collage .collage-item:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+      .memory-collage .collage-item:nth-child(5) { grid-column: span 2; grid-row: span 1; }
+      .memory-collage .collage-item:nth-child(6) { grid-column: span 2; grid-row: span 1; }
+      .memory-collage .collage-item:nth-child(7) { grid-column: span 1; grid-row: span 1; }
+      .memory-collage .collage-item:nth-child(8) { grid-column: span 1; grid-row: span 1; }
+    }
+
+    /* ====== RESTO DE SECCIONES ROMÁNTICAS ====== */
     .memory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
     .memory-card {
       background: linear-gradient(180deg, var(--panel), var(--panel2));
@@ -1720,6 +1801,7 @@
         <p class="section-label">Cómo empezó todo</p>
         <h2 class="section-title">Nuestra Historia</h2>
         <div class="codex-grid" id="historiaGrid"></div>
+        <div id="historiaEditBtnWrap" style="text-align:center;margin-top:18px"></div>
       </section>
 
       <!-- ====== SOBRE ELLA ====== -->
@@ -1730,14 +1812,16 @@
         <div style="margin-top:40px">
           <h3 style="color:var(--gold2);font-size:1.4rem;margin-bottom:20px">💖 10 cosas que amo de ti</h3>
           <div class="codex-grid" id="cosasGrid" style="grid-template-columns:repeat(2,1fr)"></div>
+          <div id="cosasEditBtnWrap" style="text-align:center;margin-top:18px"></div>
         </div>
       </section>
 
-      <!-- ====== RECUERDOS ====== -->
+      <!-- ====== RECUERDOS (COLLAGE) ====== -->
       <section id="recuerdos">
         <p class="section-label">Momentos que atesoramos</p>
         <h2 class="section-title">Nuestros Recuerdos</h2>
-        <div class="memory-grid" id="recuerdosGrid"></div>
+        <div class="memory-collage" id="recuerdosGrid"></div>
+        <div id="recuerdosEditBtnWrap" style="text-align:center;margin-top:18px"></div>
       </section>
 
       <!-- ====== TIMELINE ====== -->
@@ -1745,6 +1829,7 @@
         <p class="section-label">Nuestra línea del tiempo</p>
         <h2 class="section-title">Nuestra Historia</h2>
         <div class="love-timeline" id="timelineGrid"></div>
+        <div id="timelineEditBtnWrap" style="text-align:center;margin-top:18px"></div>
       </section>
 
       <!-- ====== COSAS QUE AMO ====== -->
@@ -1752,6 +1837,7 @@
         <p class="section-label">Lo que me enamora de ti</p>
         <h2 class="section-title">Cosas que Amo de Ti</h2>
         <div class="codex-grid" id="cosasAmoGrid" style="grid-template-columns:repeat(2,1fr)"></div>
+        <div id="cosasAmoEditBtnWrap" style="text-align:center;margin-top:18px"></div>
       </section>
 
       <!-- ====== NUESTRA CANCIÓN ====== -->
@@ -1759,6 +1845,7 @@
         <p class="section-label">La banda sonora de nuestro amor</p>
         <h2 class="section-title">Nuestra Canción</h2>
         <div id="cancionGrid"></div>
+        <div id="cancionEditBtnWrap" style="text-align:center;margin-top:18px"></div>
       </section>
 
       <!-- ====== LUGARES ====== -->
@@ -1766,6 +1853,7 @@
         <p class="section-label">Rincones que guardan nuestro amor</p>
         <h2 class="section-title">Nuestros Lugares</h2>
         <div class="codex-grid" id="lugaresGrid" style="grid-template-columns:repeat(2,1fr)"></div>
+        <div id="lugaresEditBtnWrap" style="text-align:center;margin-top:18px"></div>
       </section>
 
       <!-- ====== CARTAS ====== -->
@@ -1773,6 +1861,7 @@
         <p class="section-label">Palabras desde el corazón</p>
         <h2 class="section-title">Cartas para Ti</h2>
         <div class="letters-grid" id="cartasGrid"></div>
+        <div id="cartasEditBtnWrap" style="text-align:center;margin-top:18px"></div>
         <div id="cartaContenido" style="display:none;margin-top:20px;padding:26px;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--gold);">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
             <h3 id="cartaTitulo" style="color:var(--gold2)"></h3>
@@ -1787,6 +1876,7 @@
         <p class="section-label">Tengo algo para ti</p>
         <h2 class="section-title">Sorpresas</h2>
         <div class="surprise-grid" id="sorpresasGrid"></div>
+        <div id="sorpresasEditBtnWrap" style="text-align:center;margin-top:18px"></div>
         <div id="sorpresaContenido" style="display:none;margin-top:20px;padding:26px;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--gold);text-align:center;">
           <p id="sorpresaTexto" style="color:var(--gold2);font-size:1.2rem;font-family:'Dancing Script',cursive"></p>
           <button class="questions-close" style="margin-top:16px" onclick="cerrarSorpresa()">Cerrar ✕</button>
@@ -1798,12 +1888,13 @@
         <p class="section-label">Siempre contigo</p>
         <h2 class="section-title">Futuro Juntos</h2>
         <div class="future-grid" id="futuroGrid"></div>
+        <div id="futuroEditBtnWrap" style="text-align:center;margin-top:18px"></div>
       </section>
     </main>
 
     <footer>
       <span class="footer-sigil">❤ ❖ ❤</span>
-      Matias Eduardo Saforas Gomez · Nuestra Historia · Universidad Peruana Los Andes
+      Matias Eduardo Saforas Gomez · Nuestra Historia
     </footer>
 
     <div id="activity-screen"></div>
@@ -2100,15 +2191,13 @@
     }
 
     /* ================= ESTADO ================= */
-    const STORAGE_KEY = 'lovePortfolioStateV1';
+    const STORAGE_KEY = 'lovePortfolioStateV2';
     function defaultState() {
       return {
         profile: {
           eyebrow: 'Nuestra historia',
           nombre: 'Matias',
           apellido: '❤️ Ella',
-          universidad: 'Universidad Peruana Los Andes',
-          semestre: '2026-I',
           foto: '',
           fechaInicio: '2024-06-15',
           tags: ['Amor', 'Complicidad', 'Aventura', 'Cariño'],
@@ -2140,7 +2229,10 @@
         recuerdos: [
           { id: 'r1', titulo: 'Primera cita', fecha: '15 de junio de 2024', lugar: 'Huancayo', desc: 'Ese día nos pasó... (describe el recuerdo)', img: '' },
           { id: 'r2', titulo: 'Primer viaje', fecha: '10 de agosto de 2024', lugar: 'Lima', desc: 'Nuestro primer viaje juntos fue...', img: '' },
-          { id: 'r3', titulo: 'Cumpleaños', fecha: '20 de noviembre de 2024', lugar: 'Huancayo', desc: 'Celebramos juntos...', img: '' }
+          { id: 'r3', titulo: 'Cumpleaños', fecha: '20 de noviembre de 2024', lugar: 'Huancayo', desc: 'Celebramos juntos...', img: '' },
+          { id: 'r4', titulo: 'Paseo', fecha: '5 de enero de 2025', lugar: 'Parque', desc: 'Un día cualquiera...', img: '' },
+          { id: 'r5', titulo: 'Nosotros', fecha: '14 de febrero de 2025', lugar: 'Cena', desc: 'San Valentín...', img: '' },
+          { id: 'r6', titulo: 'Un día cualquiera', fecha: '20 de marzo de 2025', lugar: 'Casa', desc: 'Momento simple...', img: '' }
         ],
         timeline: [
           { fecha: '2024', titulo: 'Nos conocimos', desc: 'El día que todo comenzó.' },
@@ -2208,7 +2300,6 @@
     let appState = null;
     let role = null;
     let editMode = false;
-    let currentUnit = '1';
 
     /* ================= LOGIN ================= */
     const ACCOUNTS = { admin: { user: 'M@t_SF', pass: '77222987' }, user: { user: 'Invitado', pass: 'upla2026' } };
@@ -2233,7 +2324,6 @@
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app-screen').style.display = 'block';
         errorEl.style.display = 'none';
-        currentUnit = '1';
         renderAll();
         botWelcome();
         syncView();
@@ -2351,7 +2441,7 @@
       const p = appState.profile, ini = ((p.nombre || '')[0] || '') + ((p.apellido || '')[0] || '');
       const photo = p.foto ? `<img src="${p.foto}" alt="Foto de ${esc(p.nombre)}">` : `<div class="ab-ph"><b>${esc(ini)}</b><small>Foto pendiente</small></div>`;
       const photoBtn = role === 'admin' ? `<span class="ab-photo-btn edit-ctrl" onclick="document.getElementById('photoInput').click()">📷 Cambiar foto</span><input type="file" id="photoInput" accept="image/*" hidden onchange="setPhoto(this)">` : '';
-      const data = [['Universidad', p.universidad], ['Historia', p.curso], ['Semestre', p.semestre], ['Cómplices', p.docente], ['Rol', p.rolAcademico], ['Lugar', p.sede]];
+      const data = [['Historia', p.curso], ['Semestre', p.semestre || '2026-I'], ['Cómplices', p.docente], ['Rol', p.rolAcademico], ['Lugar', p.sede], ['Enfoque', p.enfoque]];
       document.getElementById('aboutGrid').innerHTML = `
         <div class="ab-card ab-main reveal">
           <div>
@@ -2370,7 +2460,29 @@
           <h3>Datos de nuestra historia</h3>
           <div class="ab-data-grid">${data.map(([l, v]) => `<div><small>${l}</small><strong>${esc(v || '—')}</strong></div>`).join('')}</div>
         </div>`;
+      if (role === 'admin') {
+        document.getElementById('aboutGrid').innerHTML += `<div style="grid-column:1/-1;text-align:center;margin-top:10px"><button class="questions-btn edit-ctrl" style="max-width:240px;margin:auto" onclick="editAbout()">✎ Editar Sobre Ella</button></div>`;
+      }
       initReveal();
+    }
+    function editAbout() {
+      const p = appState.profile;
+      openEditModal('Editar Sobre Ella', [
+        { key: 'apellido', label: 'Nombre de ella', value: p.apellido },
+        { key: 'nombre', label: 'Tu nombre', value: p.nombre },
+        { key: 'descFuerte', label: 'Frase destacada', value: p.descFuerte },
+        { key: 'descResto', label: 'Descripción', type: 'textarea', value: p.descResto },
+        { key: 'tags', label: 'Etiquetas (separadas por comas)', value: (p.tags || []).join(', ') },
+        { key: 'docente', label: 'Subtítulo (cómplices)', value: p.docente },
+        { key: 'sede', label: 'Lugar', value: p.sede },
+        { key: 'enfoque', label: 'Enfoque', value: p.enfoque },
+        { key: 'rolAcademico', label: 'Rol', value: p.rolAcademico }
+      ], vals => {
+        if (vals.tags) vals.tags = vals.tags.split(',').map(s => s.trim()).filter(Boolean);
+        Object.assign(appState.profile, vals);
+        saveState(); renderAbout(); renderProfile();
+        showToast('Sobre Ella actualizado.');
+      });
     }
     function setPhoto(inp) {
       const f = inp.files[0]; if (!f) return;
@@ -2398,6 +2510,9 @@
         const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="editHistoria(${i})">✎</button></div>` : '';
         return `<article class="codex-card reveal tilt">${toolbar}<div class="codex-emblem">${ICONS[i % ICONS.length]}</div><span>${esc(c.n)}</span><h3>${esc(c.t)}</h3><p>${esc(c.d)}</p></article>`;
       }).join('');
+      document.getElementById('historiaEditBtnWrap').innerHTML = role === 'admin'
+        ? `<button class="questions-btn edit-ctrl" style="max-width:240px;margin:auto" onclick="addHistoria()">➕ Añadir momento</button>`
+        : '';
       initReveal();
     }
     function editHistoria(i) {
@@ -2408,20 +2523,36 @@
         { key: 'd', label: 'Descripción', type: 'textarea', value: c.d }
       ], vals => { Object.assign(c, vals); saveState(); renderHistoria(); showToast('Momento actualizado.'); });
     }
+    function addHistoria() {
+      const n = appState.historia.length + 1;
+      openEditModal('Añadir momento', [
+        { key: 'n', label: 'Número', value: String(n).padStart(2, '0') },
+        { key: 't', label: 'Título', value: '' },
+        { key: 'd', label: 'Descripción', type: 'textarea', value: '' }
+      ], vals => {
+        appState.historia.push({ n: vals.n, t: vals.t, d: vals.d });
+        saveState(); renderHistoria(); showToast('Momento añadido.');
+      });
+    }
 
-    /* ====== RECUERDOS ====== */
+    /* ====== RECUERDOS (COLLAGE) ====== */
     function renderRecuerdos() {
-      document.getElementById('recuerdosGrid').innerHTML = appState.recuerdos.map(r => {
-        const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="editRecuerdo('${r.id}')">✎</button></div>` : '';
-        const img = r.img ? `<img src="${r.img}" alt="${esc(r.titulo)}">` : '📸';
-        return `<div class="memory-card reveal">${toolbar}
-          <div class="mem-img">${img}</div>
-          <h3>${esc(r.titulo)}</h3>
-          <p>${esc(r.fecha)} · ${esc(r.lugar)}</p>
-          <p style="margin-top:8px;font-size:.85rem">${esc(r.desc)}</p>
-        </div>`;
+      const grid = document.getElementById('recuerdosGrid');
+      const recs = appState.recuerdos;
+      grid.innerHTML = recs.map((r, i) => {
+        const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl" style="top:6px;right:6px"><button type="button" class="icon-btn" title="Editar" onclick="event.stopPropagation();editRecuerdo('${r.id}')">✎</button></div>` : '';
+        const img = r.img ? `<img src="${r.img}" alt="${esc(r.titulo)}">` : `<div class="collage-placeholder">📸</div>`;
+        const overlay = `<div class="collage-overlay">${esc(r.titulo)}</div>`;
+        return `<div class="collage-item" onclick="verRecuerdo('${r.id}')">${toolbar}${img}${overlay}</div>`;
       }).join('');
-      initReveal();
+      document.getElementById('recuerdosEditBtnWrap').innerHTML = role === 'admin'
+        ? `<button class="questions-btn edit-ctrl" style="max-width:240px;margin:auto" onclick="addRecuerdo()">➕ Añadir recuerdo</button>`
+        : '';
+    }
+    function verRecuerdo(id) {
+      const r = appState.recuerdos.find(x => x.id === id);
+      if (!r) return;
+      alert(`📅 ${r.fecha}\n📍 ${r.lugar}\n❤️ ${r.titulo}\n\n${r.desc}`);
     }
     function editRecuerdo(id) {
       const r = appState.recuerdos.find(x => x.id === id);
@@ -2430,8 +2561,20 @@
         { key: 'fecha', label: 'Fecha', value: r.fecha },
         { key: 'lugar', label: 'Lugar', value: r.lugar },
         { key: 'desc', label: 'Descripción', type: 'textarea', value: r.desc },
-        { key: 'img', label: 'URL de imagen (opcional)', value: r.img }
+        { key: 'img', label: 'URL de imagen (opcional)', value: r.img, hint: 'Pega una URL o deja vacío para placeholder' }
       ], vals => { Object.assign(r, vals); saveState(); renderRecuerdos(); showToast('Recuerdo actualizado.'); });
+    }
+    function addRecuerdo() {
+      openEditModal('Añadir recuerdo', [
+        { key: 'titulo', label: 'Título', value: '' },
+        { key: 'fecha', label: 'Fecha', value: '' },
+        { key: 'lugar', label: 'Lugar', value: '' },
+        { key: 'desc', label: 'Descripción', type: 'textarea', value: '' },
+        { key: 'img', label: 'URL de imagen (opcional)', value: '' }
+      ], vals => {
+        appState.recuerdos.push({ id: uid(), titulo: vals.titulo, fecha: vals.fecha, lugar: vals.lugar, desc: vals.desc, img: vals.img });
+        saveState(); renderRecuerdos(); showToast('Recuerdo añadido.');
+      });
     }
 
     /* ====== TIMELINE ====== */
@@ -2440,6 +2583,9 @@
         const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="editTimeline(${i})">✎</button></div>` : '';
         return `<div class="timeline-item reveal">${toolbar}<small>${esc(t.fecha)}</small><h3>${esc(t.titulo)}</h3><p>${esc(t.desc)}</p></div>`;
       }).join('');
+      document.getElementById('timelineEditBtnWrap').innerHTML = role === 'admin'
+        ? `<button class="questions-btn edit-ctrl" style="max-width:240px;margin:auto" onclick="addTimeline()">➕ Añadir evento</button>`
+        : '';
       initReveal();
     }
     function editTimeline(i) {
@@ -2450,6 +2596,16 @@
         { key: 'desc', label: 'Descripción', type: 'textarea', value: t.desc }
       ], vals => { Object.assign(t, vals); saveState(); renderTimeline(); showToast('Evento actualizado.'); });
     }
+    function addTimeline() {
+      openEditModal('Añadir evento', [
+        { key: 'fecha', label: 'Fecha', value: '' },
+        { key: 'titulo', label: 'Título', value: '' },
+        { key: 'desc', label: 'Descripción', type: 'textarea', value: '' }
+      ], vals => {
+        appState.timeline.push({ fecha: vals.fecha, titulo: vals.titulo, desc: vals.desc });
+        saveState(); renderTimeline(); showToast('Evento añadido.');
+      });
+    }
 
     /* ====== COSAS QUE AMO ====== */
     function renderCosasAmo() {
@@ -2457,6 +2613,9 @@
         const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="editCosaAmo(${i})">✎</button></div>` : '';
         return `<div class="codex-card reveal tilt">${toolbar}<div class="codex-emblem">${c.icono}</div><h3>${esc(c.titulo)}</h3><p>${esc(c.texto)}</p></div>`;
       }).join('');
+      document.getElementById('cosasEditBtnWrap').innerHTML = role === 'admin'
+        ? `<button class="questions-btn edit-ctrl" style="max-width:240px;margin:auto" onclick="addCosaAmo()">➕ Añadir cosa</button>`
+        : '';
       initReveal();
     }
     function editCosaAmo(i) {
@@ -2466,6 +2625,16 @@
         { key: 'titulo', label: 'Título', value: c.titulo },
         { key: 'texto', label: 'Descripción', type: 'textarea', value: c.texto }
       ], vals => { Object.assign(c, vals); saveState(); renderCosasAmo(); showToast('Actualizado.'); });
+    }
+    function addCosaAmo() {
+      openEditModal('Añadir cosa que amo', [
+        { key: 'icono', label: 'Icono', value: '❤️' },
+        { key: 'titulo', label: 'Título', value: '' },
+        { key: 'texto', label: 'Descripción', type: 'textarea', value: '' }
+      ], vals => {
+        appState.cosasAmo.push({ icono: vals.icono, titulo: vals.titulo, texto: vals.texto });
+        saveState(); renderCosasAmo(); showToast('Añadido.');
+      });
     }
 
     /* ====== CANCIÓN ====== */
@@ -2495,6 +2664,9 @@
         const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="editLugar(${i})">✎</button></div>` : '';
         return `<div class="codex-card reveal tilt">${toolbar}<div class="codex-emblem">${l.icono}</div><h3>${esc(l.nombre)}</h3><p>${esc(l.desc)}</p></div>`;
       }).join('');
+      document.getElementById('lugaresEditBtnWrap').innerHTML = role === 'admin'
+        ? `<button class="questions-btn edit-ctrl" style="max-width:240px;margin:auto" onclick="addLugar()">➕ Añadir lugar</button>`
+        : '';
       initReveal();
     }
     function editLugar(i) {
@@ -2505,13 +2677,26 @@
         { key: 'desc', label: 'Descripción', type: 'textarea', value: l.desc }
       ], vals => { Object.assign(l, vals); saveState(); renderLugares(); showToast('Lugar actualizado.'); });
     }
+    function addLugar() {
+      openEditModal('Añadir lugar', [
+        { key: 'icono', label: 'Icono', value: '📍' },
+        { key: 'nombre', label: 'Nombre', value: '' },
+        { key: 'desc', label: 'Descripción', type: 'textarea', value: '' }
+      ], vals => {
+        appState.lugares.push({ icono: vals.icono, nombre: vals.nombre, desc: vals.desc });
+        saveState(); renderLugares(); showToast('Lugar añadido.');
+      });
+    }
 
     /* ====== CARTAS ====== */
     function renderCartas() {
       document.getElementById('cartasGrid').innerHTML = appState.cartas.map(c => {
-        const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="editCarta('${c.id}')">✎</button></div>` : '';
+        const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="event.stopPropagation();editCarta('${c.id}')">✎</button></div>` : '';
         return `<div class="letter-card reveal" onclick="abrirCarta('${c.id}')">${toolbar}<h3>${esc(c.titulo)}</h3><p>Clic para leer</p></div>`;
       }).join('');
+      document.getElementById('cartasEditBtnWrap').innerHTML = role === 'admin'
+        ? `<button class="questions-btn edit-ctrl" style="max-width:240px;margin:auto" onclick="addCarta()">➕ Añadir carta</button>`
+        : '';
       initReveal();
     }
     function abrirCarta(id) {
@@ -2529,13 +2714,25 @@
         { key: 'texto', label: 'Contenido', type: 'textarea', value: c.texto }
       ], vals => { Object.assign(c, vals); saveState(); renderCartas(); showToast('Carta actualizada.'); });
     }
+    function addCarta() {
+      openEditModal('Añadir carta', [
+        { key: 'titulo', label: 'Título', value: '' },
+        { key: 'texto', label: 'Contenido', type: 'textarea', value: '' }
+      ], vals => {
+        appState.cartas.push({ id: uid(), titulo: vals.titulo, texto: vals.texto });
+        saveState(); renderCartas(); showToast('Carta añadida.');
+      });
+    }
 
     /* ====== SORPRESAS ====== */
     function renderSorpresas() {
       document.getElementById('sorpresasGrid').innerHTML = appState.sorpresas.map(s => {
-        const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="editSorpresa('${s.id}')">✎</button></div>` : '';
+        const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="event.stopPropagation();editSorpresa('${s.id}')">✎</button></div>` : '';
         return `<div class="surprise-card reveal" onclick="abrirSorpresa('${s.id}')">${toolbar}<div class="lock">🔒</div><h3>${esc(s.titulo)}</h3><p>Toca para abrir</p></div>`;
       }).join('');
+      document.getElementById('sorpresasEditBtnWrap').innerHTML = role === 'admin'
+        ? `<button class="questions-btn edit-ctrl" style="max-width:240px;margin:auto" onclick="addSorpresa()">➕ Añadir sorpresa</button>`
+        : '';
       initReveal();
     }
     function abrirSorpresa(id) {
@@ -2552,6 +2749,15 @@
         { key: 'texto', label: 'Texto', type: 'textarea', value: s.texto }
       ], vals => { Object.assign(s, vals); saveState(); renderSorpresas(); showToast('Sorpresa actualizada.'); });
     }
+    function addSorpresa() {
+      openEditModal('Añadir sorpresa', [
+        { key: 'titulo', label: 'Título', value: '' },
+        { key: 'texto', label: 'Texto', type: 'textarea', value: '' }
+      ], vals => {
+        appState.sorpresas.push({ id: uid(), titulo: vals.titulo, texto: vals.texto });
+        saveState(); renderSorpresas(); showToast('Sorpresa añadida.');
+      });
+    }
 
     /* ====== FUTURO ====== */
     function renderFuturo() {
@@ -2559,6 +2765,9 @@
         const toolbar = role === 'admin' ? `<div class="entity-toolbar edit-ctrl"><button type="button" class="icon-btn" title="Editar" onclick="editFuturo(${i})">✎</button></div>` : '';
         return `<div class="future-card reveal">${toolbar}<div class="emoji">${f.icono}</div><h3>${esc(f.titulo)}</h3><p>${esc(f.texto)}</p></div>`;
       }).join('');
+      document.getElementById('futuroEditBtnWrap').innerHTML = role === 'admin'
+        ? `<button class="questions-btn edit-ctrl" style="max-width:240px;margin:auto" onclick="addFuturo()">➕ Añadir sueño</button>`
+        : '';
       initReveal();
     }
     function editFuturo(i) {
@@ -2568,6 +2777,16 @@
         { key: 'titulo', label: 'Título', value: f.titulo },
         { key: 'texto', label: 'Descripción', type: 'textarea', value: f.texto }
       ], vals => { Object.assign(f, vals); saveState(); renderFuturo(); showToast('Actualizado.'); });
+    }
+    function addFuturo() {
+      openEditModal('Añadir sueño', [
+        { key: 'icono', label: 'Icono', value: '❤️' },
+        { key: 'titulo', label: 'Título', value: '' },
+        { key: 'texto', label: 'Descripción', type: 'textarea', value: '' }
+      ], vals => {
+        appState.futuro.push({ icono: vals.icono, titulo: vals.titulo, texto: vals.texto });
+        saveState(); renderFuturo(); showToast('Sueño añadido.');
+      });
     }
 
     /* ====== ESTADÍSTICAS ====== */
@@ -2589,27 +2808,6 @@
       initReveal();
     }
 
-    /* ====== ACTIVIDADES / PDF (mantenido) ====== */
-    function renderUnitTabs() { /* no aplica en esta versión temática */ }
-    function renderUnitPanel() { /* no aplica */ }
-    function renderWeekCard() { /* no aplica */ }
-    function renderActivityBlock() { /* no aplica */ }
-    function openActivities() { /* no aplica */ }
-    function toggleQuestions() { /* no aplica */ }
-    function toggleActivities() { /* no aplica */ }
-    function addWeek() { }
-    function editWeek() { }
-    function deleteWeek() { }
-    function editCapacity() { }
-    function selectUnit() { }
-    function toggleUnitLock() { }
-    function renderQuestionsPanel() { }
-    function renderQuestionCard() { }
-    function addQuestion() { }
-    function editQuestion() { }
-    function deleteQuestion() { }
-    function editGrimorio() { }
-
     /* ====== MODAL GENÉRICO ====== */
     let modalSaveHandler = null;
     function openEditModal(title, fields, onSave) {
@@ -2618,6 +2816,9 @@
       form.innerHTML = fields.map(f => {
         if (f.type === 'textarea') {
           return `<div class="edit-field"><label>${esc(f.label)}</label><textarea name="${esc(f.key)}">${esc(f.value)}</textarea>${f.hint ? `<small>${esc(f.hint)}</small>` : ''}</div>`;
+        }
+        if (f.type === 'file') {
+          return `<div class="edit-field"><label>${esc(f.label)}</label><input name="${esc(f.key)}" type="file">${f.hint ? `<small>${esc(f.hint)}</small>` : ''}</div>`;
         }
         return `<div class="edit-field"><label>${esc(f.label)}</label><input name="${esc(f.key)}" type="${f.type || 'text'}" value="${esc(f.value)}"${f.step ? ` step="${f.step}"` : ''}${f.min != null ? ` min="${f.min}"` : ''}${f.max != null ? ` max="${f.max}"` : ''}>${f.hint ? `<small>${esc(f.hint)}</small>` : ''}</div>`;
       }).join('');
@@ -2721,7 +2922,7 @@
       if (ghCfg()) ghPublish(); else showToast(msg + ' Guardada solo en este navegador: conecta GitHub (⚙) para que la vean los demás.');
     }
 
-    /* ====== ACTIVITY SCREEN (oculto en esta versión, pero mantenido) ====== */
+    /* ====== ACTIVITY SCREEN (oculto) ====== */
     let actView = null;
     function renderActivityPage() { }
     function showAct() { }
@@ -2779,9 +2980,7 @@
       e.preventDefault(); const i = document.getElementById('bot-input'), t = i.value.trim();
       if (!t) return; botAsk(t); i.value = '';
     });
-
-    /* ====== INICIALIZACIÓN (para que el login funcione, el estado se carga en el submit) ====== */
-    // (opcional: podrías precargar appState = defaultState() para pruebas, pero el login lo hace)
   </script>
 </body>
 </html>
+```
